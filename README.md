@@ -14,6 +14,7 @@ Define an interface for your api which is accessable in your client and server s
 export type API = {
   hello: () => string;
   world: () => string;
+  sum: (x: number, y: number) => number;
 };
 ```
 
@@ -23,13 +24,13 @@ export type API = {
 import "module-alias/register";
 
 import Client from "@root/src/client";
-import { API } from "../api";
 
-const client = Client<API>();
+const client = Client<API>("http://localhost:8080");
 
 const main = async () => {
   console.log(await client.hello());
   console.log(await client.world());
+  console.log(await client.sum(12, 20));
 };
 
 main();
@@ -41,11 +42,11 @@ main();
 import "module-alias/register";
 
 import Server from "@root/src/server";
-import { API } from "../api";
 
 const api: API = {
   hello: () => "Hello World",
   world: () => "World Hello",
+  sum: (x, y) => x + y,
 };
 
 Server(8080, api);

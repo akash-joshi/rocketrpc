@@ -1,11 +1,12 @@
 import "module-alias/register";
 
-import Server from "@root/src/server";
+import { Server } from "@root/src";
 import { API } from "../api";
 
 const api: API = {
   hello: () => "Hello World!",
   world: () => "World Hello",
+  sum: (x, y) => x + y,
   errorFunction: (a: any) => a.b,
 };
 

@@ -28,7 +28,7 @@ export type API = {
 
 ### Client
 
-> Note: On the client side, all functions return a Promise with the result by default, because of the asynchronous nature of sockets.
+> Note: On the client side, all functions return a Promise with the result by default, because of the asynchronous nature of sockets. So, all passed functions are also modified to return a Promise.
 
 ```ts
 import { Client } from "functions-over-websockets";

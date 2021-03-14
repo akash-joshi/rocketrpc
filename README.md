@@ -8,12 +8,12 @@ A typesafe websocket RPC library for your browser and nodejs applications.
 
 1. Define an interface for your api which is accessable in your client and server source code (e.g. by using yarn workspaces).
 
-   ```ts
+```ts
    export type API = { 
      hello: () => string; 
      world: () => string 
   };
-   ```
+```
 
 ### Client
 

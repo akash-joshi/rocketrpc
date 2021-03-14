@@ -1,6 +1,4 @@
-import "module-alias/register";
-
-import Client from "@root/src/client";
+import { Client } from "../../src";
 import { API } from "../api";
 
 const client = Client<API>();

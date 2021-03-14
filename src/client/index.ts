@@ -1,5 +1,7 @@
 import { io } from "socket.io-client";
 
+type Promisify<T> = { [K in keyof T]: Promise<T[K]> };
+
 export default function Client<API>(
   endpoint: string = "http://localhost:8080"
 ) {
@@ -42,5 +44,5 @@ export default function Client<API>(
         };
       },
     }
-  ) as API;
+  ) as Promisify<API>;
 }

@@ -1,5 +1,4 @@
-import "module-alias/register";
-import { Client } from "@root/src";
+import { Client } from "../../src/index";
 import { API } from "../api";
 
 const client = Client<API>("http://localhost:8080");

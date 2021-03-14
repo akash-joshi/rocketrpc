@@ -1,6 +1,4 @@
-import "module-alias/register";
-
-import { Server } from "@root/src";
+import { Server } from "../../src/index";
 import { API } from "../api";
 
 const api: API = {

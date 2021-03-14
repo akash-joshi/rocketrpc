@@ -1,5 +1,4 @@
 import "module-alias/register";
-
 import { Client } from "@root/src";
 import { API } from "../api";
 

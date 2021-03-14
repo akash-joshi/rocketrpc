@@ -13,8 +13,6 @@ export default function Server(
     console.log("Client connected successfully");
 
     socket.on("function-call", async (msg) => {
-      console.log(msg);
-
       const {
         id,
         procedureName,
@@ -23,14 +21,22 @@ export default function Server(
 
       const procedure = api[procedureName];
 
-      const result = await procedure(...params);
+      try {
+        const result = await procedure(...params);
 
-      console.log(result, socket.id);
-
-      socket.emit("function-response", {
-        id,
-        result,
-      });
+        socket.emit("function-response", {
+          id,
+          result,
+          status: 200,
+        });
+      } catch (error) {
+        console.error(error);
+        socket.emit("function-response", {
+          id,
+          error: error.toString(),
+          status: 500,
+        });
+      }
     });
   });
 }

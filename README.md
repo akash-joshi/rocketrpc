@@ -2,17 +2,19 @@
 
 A typesafe websocket RPC library for your browser and nodejs applications.
 
+While defining a server's APIs using TS, you can automatically define the frontend's function contracts. These functions can be called "natively", as if they're already present in the frontend itself.
+
 ## Usage
 
 ### Common
 
-1. Define an interface for your api which is accessable in your client and server source code (e.g. by using yarn workspaces).
+Define an interface for your api which is accessable in your client and server source code (e.g. by using yarn workspaces).
 
 ```ts
-   export type API = { 
-     hello: () => string; 
-     world: () => string 
-  };
+export type API = {
+  hello: () => string;
+  world: () => string;
+};
 ```
 
 ### Client
@@ -48,6 +50,16 @@ const api: API = {
 
 Server(8080, api);
 ```
+
+## Error Handling
+
+At the moment, any error on the server-side is sent to `std:error` and thrown on the client side.
+
+Try running `/example/client/throwsError.ts` to check it out.
+
+## What's Not Supported?
+
+1. Passing functions as a parameter. This would require stringifying the function on the frontend and running `eval` on it on the backend, which is an UNSAFE OPERATION.
 
 ## Contributing
 

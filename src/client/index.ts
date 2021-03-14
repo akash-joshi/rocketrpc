@@ -8,7 +8,11 @@ export default function Client<API>(
   const queue: { [key: string]: (value: unknown) => void } = {};
 
   socket.on("function-response", (msg) => {
-    const { result, id } = msg;
+    const { result, id, status, error } = msg;
+
+    if (status > 200) {
+      throw new Error(`ServerError: ${error}`);
+    }
 
     queue[id](result);
 

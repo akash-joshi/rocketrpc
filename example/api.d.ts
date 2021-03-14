@@ -1,1 +1,5 @@
-export type API = { hello: () => string; world: () => string };
+export type API = {
+  hello: () => string;
+  world: () => string;
+  errorFunction: any;
+};

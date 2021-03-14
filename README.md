@@ -6,6 +6,14 @@ While defining a server's APIs using TS, you can automatically define the fronte
 
 ## Usage
 
+### Installation
+
+Install the package
+
+```sh
+npm i functions-over-websockets
+```
+
 ### Common
 
 Define an interface for your api which is accessable in your client and server source code (e.g. by using yarn workspaces).
@@ -20,17 +28,20 @@ export type API = {
 
 ### Client
 
-```ts
-import "module-alias/register";
+> Note: On the client side, all functions return a Promise with the result by default, because of the asynchronous nature of sockets.
 
-import Client from "@root/src/client";
+```ts
+import { Client } from "functions-over-websockets";
 
 const client = Client<API>("http://localhost:8080");
+
+// Functions can also be deconstructed from the clients
+const { sum } = client;
 
 const main = async () => {
   console.log(await client.hello());
   console.log(await client.world());
-  console.log(await client.sum(12, 20));
+  console.log(await sum(12, 20));
 };
 
 main();
@@ -39,9 +50,7 @@ main();
 ### Server
 
 ```ts
-import "module-alias/register";
-
-import Server from "@root/src/server";
+import { Server } from "functions-over-websockets";
 
 const api: API = {
   hello: () => "Hello World",

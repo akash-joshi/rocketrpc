@@ -4,7 +4,7 @@ import { API } from "../api";
 const api: API = {
   hello: () => "Hello World!",
   world: () => "World Hello",
-  sum: (x, y) => x + y,
+  sum: async (x, y) => x + y,
   errorFunction: (a: any) => a.b,
 };
 

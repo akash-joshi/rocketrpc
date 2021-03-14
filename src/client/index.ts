@@ -1,6 +1,8 @@
 import { io } from "socket.io-client";
 
-type Promisify<T> = { [K in keyof T]: Promise<T[K]> };
+type Promisify<T extends Record<string | symbol | number, any>> = {
+  [K in keyof T]: (...params: Parameters<T[K]>) => Promise<ReturnType<T[K]>>;
+};
 
 export default function Client<API>(
   endpoint: string = "http://localhost:8080"

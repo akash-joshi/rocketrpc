@@ -5,16 +5,18 @@ export default function Client<API>(
 ) {
   const socket = io(endpoint);
 
-  const queue: any = {};
+  const queue: { [key: string]: (value: unknown) => void } = {};
 
   socket.on("function-response", (msg) => {
     const { result, id } = msg;
 
     queue[id](result);
+
+    delete queue[id];
   });
 
-  const waitForResult = (id: string, onResponse: any) => {
-    queue[id] = onResponse;
+  const waitForResult = (id: string, resolve: (value: unknown) => void) => {
+    queue[id] = resolve;
   };
 
   return new Proxy(
@@ -31,10 +33,6 @@ export default function Client<API>(
             params,
             id,
           });
-
-          const onResponse = (result: any) => Promise.resolve(result);
-
-          queue[id] = onResponse;
 
           return new Promise((resolve) => waitForResult(id, resolve));
         };

@@ -3,7 +3,10 @@ import { Server as SocketServer } from "socket.io";
 
 type port = number;
 
-export default function Server(endpoint: http | port = 8080, api: any) {
+export default function Server(
+  endpoint: http | port = 8080,
+  api: { [key: string]: (...params: any[]) => any }
+) {
   const io = new SocketServer(endpoint);
 
   io.on("connection", (socket) => {
@@ -12,7 +15,11 @@ export default function Server(endpoint: http | port = 8080, api: any) {
     socket.on("function-call", async (msg) => {
       console.log(msg);
 
-      const { id, procedureName, params } = msg;
+      const {
+        id,
+        procedureName,
+        params,
+      }: { id: string; procedureName: string; params: any[] } = msg;
 
       const procedure = api[procedureName];
 

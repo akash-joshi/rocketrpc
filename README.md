@@ -1,4 +1,4 @@
-# functions-over-websockets
+# functions-without-boundaries
 
 A typesafe websocket RPC library for your browser and nodejs applications.
 

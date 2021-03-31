@@ -1,6 +1,6 @@
 # functions-without-boundaries
 
-A typesafe websocket RPC library for your browser and nodejs applications.
+A typesafe websocket RPC library which thins the borders between clients and servers. 
 
 While defining a server's APIs using TS, you can automatically define the frontend's function contracts. These functions can be called "natively", as if they're already present in the frontend itself.
 

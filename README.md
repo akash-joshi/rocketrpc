@@ -11,7 +11,7 @@ While defining a server's APIs using TS, you can automatically define the fronte
 Install the package
 
 ```sh
-npm i functions-over-websockets
+npm i fsf
 ```
 
 ### Common
@@ -31,7 +31,7 @@ export type API = {
 > Note: On the client side, all functions return a Promise with the result by default, because of the asynchronous nature of sockets. So, all passed functions are also modified to return a Promise.
 
 ```ts
-import { Client } from "functions-over-websockets";
+import { Client } from "fsf";
 
 const client = Client<API>("http://localhost:8080");
 
@@ -50,7 +50,7 @@ main();
 ### Server
 
 ```ts
-import { Server } from "functions-over-websockets";
+import { Server } from "fsf";
 
 const api: API = {
   hello: () => "Hello World",

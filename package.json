@@ -1,6 +1,6 @@
 {
-  "name": "functions-over-websockets",
-  "version": "1.0.1",
+  "name": "fsf",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

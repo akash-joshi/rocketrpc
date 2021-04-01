@@ -1,4 +1,4 @@
-# functions-without-borders
+# Functions Without Borders - Fonctions sans Frontières (fsf)
 
 ![Group 3](https://user-images.githubusercontent.com/22196279/113299500-900aed00-931a-11eb-9b23-f12433925d88.png)
 

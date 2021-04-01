@@ -1,4 +1,4 @@
-# functions-without-boundaries
+# functions-without-borders
 
 A typesafe websocket RPC library which thins the borders between clients and servers. 
 

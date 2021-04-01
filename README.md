@@ -1,5 +1,7 @@
 # functions-without-borders
 
+![Group 3](https://user-images.githubusercontent.com/22196279/113299500-900aed00-931a-11eb-9b23-f12433925d88.png)
+
 A typesafe websocket RPC library which thins the borders between clients and servers. 
 
 While defining a server's APIs using TS, you can automatically define the frontend's function contracts. These functions can be called "natively", as if they're already present in the frontend itself.

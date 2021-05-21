@@ -1,6 +1,6 @@
 {
   "name": "fsf",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -13,7 +13,20 @@
     "type": "git",
     "url": "git+https://github.com/akash-joshi/functions-over-websockets.git"
   },
-  "keywords": [],
+  "keywords": [
+    "functions-without-borders",
+    "functions",
+    "websockets",
+    "functions-over-websockets",
+    "typescript",
+    "typesafe",
+    "web",
+    "framework",
+    "app",
+    "rpc",
+    "remote procedure call",
+    "indie"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

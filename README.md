@@ -1,6 +1,6 @@
 # Functions Without Borders - Fonctions sans Frontières (fsf)
 
-![Group 4](https://user-images.githubusercontent.com/22196279/113303763-07db1680-931f-11eb-9481-c98627bea695.png)
+![Frame 2](https://user-images.githubusercontent.com/22196279/119225442-6f446400-bb21-11eb-8e63-ae8e62d6dcc9.png)
 
 A typesafe websocket RPC library which thins the borders between clients and servers.
 

@@ -1,4 +1,4 @@
-import type { Server as http } from "http";
+import type { Server as http } from "https";
 import { Server as SocketServer } from "socket.io";
 
 type port = number;

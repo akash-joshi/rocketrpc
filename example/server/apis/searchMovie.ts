@@ -17,9 +17,3 @@ export default async function searchMovie(movieName: string, page = 1) {
     )
   ).data;
 }
-
-const main = async () => {
-  console.log(await searchMovie("kong"));
-};
-
-main();

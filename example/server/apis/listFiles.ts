@@ -8,10 +8,3 @@ export default function listFiles(): {
 } {
   return exec("ls -la /");
 }
-
-// const main = async () => {
-//   const result = await listFiles();
-//   console.log(result);
-// };
-
-// main();

@@ -2,7 +2,7 @@
 
 ![Group 4](https://user-images.githubusercontent.com/22196279/113303763-07db1680-931f-11eb-9481-c98627bea695.png)
 
-A typesafe websocket RPC library which thins the borders between clients and servers. 
+A typesafe websocket RPC library which thins the borders between clients and servers.
 
 While defining a server's APIs using TS, you can automatically define the frontend's function contracts. These functions can be called "natively", as if they're already present in the frontend itself.
 
@@ -34,16 +34,19 @@ export type API = {
 
 ```ts
 import { Client } from "fsf";
+import { API } from "../api";
 
 const client = Client<API>("http://localhost:8080");
 
-// Functions can also be deconstructed from the clients
-const { sum } = client;
+const { listFiles, searchMovie } = client;
 
 const main = async () => {
   console.log(await client.hello());
-  console.log(await client.world());
-  console.log(await sum(12, 20));
+  // passing multiple parameters to the function
+  console.log(await client.sum(12, 20));
+  console.log(await listFiles());
+  // passing a string parameter
+  console.log(await searchMovie("kong"));
 };
 
 main();
@@ -53,11 +56,18 @@ main();
 
 ```ts
 import { Server } from "fsf";
+import { API } from "../api";
+import listFiles from "./apis/listFiles";
+import searchMovie from "./apis/searchMovie";
 
 const api: API = {
-  hello: () => "Hello World",
-  world: () => "World Hello",
+  hello: () => "Hello World!",
   sum: (x, y) => x + y,
+  // Make an API call to movies API
+  searchMovie: searchMovie,
+  // Fetch all files on server
+  listFiles: listFiles,
+  errorFunction: (a: any) => a.b,
 };
 
 Server(8080, api);
@@ -72,6 +82,47 @@ Try running `/example/client/throwsError.ts` to check it out.
 ## What's Not Supported?
 
 1. Passing functions as a parameter. This would require stringifying the function on the frontend and running `eval` on it on the backend, which is an UNSAFE OPERATION.
+
+## How does it work internally?
+
+In short, the library depends on Websockets, Object Proxies, and Typescript generics to work. In detail:
+
+### 1. Websockets
+
+We use socket.io for fast and reliable socket connections. Websockets can be lighter than HTTP requests when a large number of connections are needed. Also, they have a smaller code footprint than HTTP requests. Their usage is anyways abstracted away in the codebase, and they can be replaced with any other technology if needed.
+
+### 2. Object Proxies
+
+The framework utilizes Object Proxies get control over the client object. Any function call made on a property of the client object (or on a deconstructed property), like
+
+```ts
+client.functionOne();
+
+// or
+
+const { functionOne } = client;
+functionOne();
+```
+
+is handled by a `get` property which has been set on the Object Proxy [here](https://github.com/akash-joshi/functions-without-borders/blob/45ed7558845b6dbf03fc368b96ca175262956051/src/client/index.ts#L33).
+
+You can go through the code to see how it uses the property name and parameters to make a socket call to the server.
+
+### 3. Typescript Generics
+
+All of the auto-complete goodness that the framework provides throughout the app depends on Typescript generics. On the server side, the type is directly applied on the API object,
+
+```ts
+const api: API = { ...yourApi };
+```
+
+while on the client side it's passed to the `Client` initializer.
+
+```ts
+const client = Client<API>(endpoint);
+```
+
+The client function is actually a generic, which accepts the type provided by the user and applies `Promise` to the return type of each of them. It's a very Typescript-specific piece of code but you can read it [here](https://github.com/akash-joshi/functions-without-borders/blob/01553873cd1a1f1acc66270c5521a74b58680be0/src/client/index.ts#L3).
 
 ## Contributing
 

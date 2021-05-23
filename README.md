@@ -8,7 +8,7 @@ While defining a server's APIs using TS, you can automatically define the fronte
 
 ## Usage
 
-![Kapture 2021-05-22 at 10 19 27](https://user-images.githubusercontent.com/22196279/119246451-4d89c200-bb9f-11eb-97ab-1829745294cc.gif)
+![ezgif-7-0b72cd0d5d98](https://user-images.githubusercontent.com/22196279/119246713-701cda80-bba1-11eb-801f-283dbc85897a.gif)
 
 ### Installation
 

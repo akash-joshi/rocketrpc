@@ -1,40 +1,39 @@
-import type { Server as http } from "https";
-import { Server as SocketServer } from "socket.io";
+ { Server as http } "https";
+ { Server as SocketServer } "socket.io";
 
-type port = number;
-
-export default function Server(
+port = number;
+ default Server(
   endpoint: http | port = 8080,
   api: { [key: string]: (...params: any[]) => any }
 ) {
-  const io = new SocketServer(endpoint);
+  io = SocketServer(endpoint);
 
   io.on("connection", (socket) => {
     console.log("Client connected successfully");
 
-    socket.on("function-call", async (msg) => {
-      const {
-        id,
+    socket.on("function-call", (msg) => {
+       {
+        
         procedureName,
         params,
       }: { id: string; procedureName: string; params: any[] } = msg;
 
-      const procedure = api[procedureName];
+       procedure = api[procedureName];
 
-      try {
-        const result = await procedure(...params);
+       {
+        result = procedure(...params);
 
         socket.emit("function-response", {
           id,
           result,
           status: 200,
         });
-      } catch (error) {
+      }  (error) {
         console.error(error);
         socket.emit("function-response", {
           id,
-          error: error.toString(),
-          status: 500,
+           error.toString(),
+           500,
         });
       }
     });

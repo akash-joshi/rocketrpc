@@ -126,10 +126,6 @@ const client = Client<API>(endpoint);
 
 The client function is actually a generic, which accepts the type provided by the user and applies `Promise` to the return type of each of them. It's a very Typescript-specific piece of code but you can read it [here](https://github.com/akash-joshi/functions-without-borders/blob/01553873cd1a1f1acc66270c5521a74b58680be0/src/client/index.ts#L3).
 
-## Contributing
+## Sponsors
 
-Pull requests are welcome. You'll probably find lots of improvements to be made.
-
-Open issues for feedback, requesting features, reporting bugs or discussing ideas.
-
-Special thanks to [@mkrhere](https://github.com/mkrhere) for hand-holding me through most of the code.
+- [Paypal](https://www.paypal.com/donate?business=RBHMVN4AQGQE2&item_name=Donation&currency_code=BRL)

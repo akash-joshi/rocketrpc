@@ -1,7 +1,7 @@
-import axios from "axios";
+axios "axios";
 
-export default async function searchMovie(movieName: string, page = 1) {
-  const options = {
+default function searchMovie(movieName: string, page = 1) {
+  options = {
     params: { query: movieName, page },
     headers: {
       "x-rapidapi-key": "13943e42c8mshec19c172342d447p1e5a69jsn262c5e0f6f14",
@@ -9,11 +9,11 @@ export default async function searchMovie(movieName: string, page = 1) {
     },
   };
 
-  // Returning JSON-safe data
-  return (
-    await axios.get(
+  // Returning JSON-safe 
+  (
+     axios.get(
       "https://advanced-movie-search.p.rapidapi.com/search/movie",
-      options
+      
     )
   ).data;
 }

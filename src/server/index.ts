@@ -5,7 +5,7 @@ type port = number;
 
 export default function Server(
   endpoint: http | port = 8080,
-  api: { [key: string]: (...params: any[]) => any }
+  api: { [key: string]: (...params: unknown[]) => unknown }
 ) {
   const io = new SocketServer(endpoint);
 
@@ -17,7 +17,7 @@ export default function Server(
         id,
         procedureName,
         params,
-      }: { id: string; procedureName: string; params: any[] } = msg;
+      }: { id: string; procedureName: string; params: unknown[] } = msg;
 
       const procedure = api[procedureName];
 

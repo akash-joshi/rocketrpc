@@ -10,7 +10,7 @@ const api: API = {
   searchMovie: searchMovie,
   // Fetch all files on server
   listFiles: listFiles,
-  errorFunction: (a: any) => a.b,
+  errorFunction: (a: { b: unknown }) => a.b,
 };
 
 Server(8080, api);

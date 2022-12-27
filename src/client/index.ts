@@ -1,12 +1,12 @@
 import { io } from "socket.io-client";
 
-type Promisify<T extends Record<string | symbol | number, unknown>> = {
+type Promisify<T extends Record<string | symbol | number, any>> = {
   [K in keyof T]: (...params: Parameters<T[K]>) => Promise<ReturnType<T[K]>>;
 };
 
-export default function Client<API>(
-  endpoint: string = "http://localhost:8080"
-) {
+export default function Client<
+  API extends Record<string | symbol | number, unknown>
+>(endpoint: string = "http://localhost:8080") {
   const socket = io(endpoint);
 
   const queue: { [key: string]: (value: unknown) => void } = {};

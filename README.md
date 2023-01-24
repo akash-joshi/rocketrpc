@@ -1,10 +1,10 @@
-# Functions Without Borders - Fonctions sans Frontières (fsf)
+# Functions Without Borders - A simple RPC shim for Typescript
 
 ![Frame 2](https://user-images.githubusercontent.com/22196279/119225442-6f446400-bb21-11eb-8e63-ae8e62d6dcc9.png)
 
-A typesafe websocket RPC library which thins the borders between clients and servers.
+A typesafe websocket RPC library which eliminates the borders between clients and servers.
 
-While defining a server's APIs using TS, you can automatically define the frontend's function contracts. These functions can be called "natively", as if they're already present in the frontend itself.
+While defining a server's APIs using TS, you can automatically define the API contract. These functions can be called "natively", as if they're already present in the frontend itself.
 
 ## Usage
 
@@ -80,10 +80,6 @@ Server(8080, api);
 At the moment, any error on the server-side is sent to `std:error` and thrown on the client side.
 
 Try running `/example/client/throwsError.ts` to check it out.
-
-## What's Not Supported?
-
-1. Passing functions as a parameter. This would require stringifying the function on the frontend and running `eval` on it on the backend, which is an UNSAFE OPERATION.
 
 ## How does it work internally?
 

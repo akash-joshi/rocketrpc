@@ -19,6 +19,12 @@ export default function Server(
         params,
       }: { id: string; procedureName: string; params: any[] } = msg;
 
+      console.log({
+        id,
+        procedureName,
+        params,
+      });
+
       const procedure = api[procedureName];
 
       try {

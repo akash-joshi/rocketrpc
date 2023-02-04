@@ -1,10 +1,8 @@
-# Functions Without Borders - A simple RPC shim for Typescript
+# RocketRPC 🚀 - A typesafe RPC to help your app fly like a rocket
 
 ![Frame 2](https://user-images.githubusercontent.com/22196279/119225442-6f446400-bb21-11eb-8e63-ae8e62d6dcc9.png)
 
-A typesafe websocket RPC library which eliminates the borders between clients and servers.
-
-While defining a server's APIs using TS, you can automatically define the API contract. These functions can be called "natively", as if they're already present in the frontend itself.
+RocketRPC is typesafe RPC library which gets out of your way. Define methods in your server, which you can access instantly in your client - complete with auto-completions and type-checking.
 
 ## Usage
 

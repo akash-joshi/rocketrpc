@@ -1,4 +1,4 @@
-import { Server } from "../../src/index";
+import { Server } from "../../../src/index";
 import { API } from "../api";
 import listFiles from "./apis/listFiles";
 import searchMovie from "./apis/searchMovie";

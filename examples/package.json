@@ -1,5 +1,5 @@
 {
-  "name": "examples",
+  "name": "@rocketrpc/examples",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

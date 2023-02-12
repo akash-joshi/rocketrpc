@@ -21,11 +21,7 @@ export function App() {
 
       <h2>Users</h2>
       <ol>
-        {users.map((user) => (
-          <li>
-            {user.name} - {user.username} at {user.email}
-          </li>
-        ))}
+        {users.map(user => <li>{user.name} - {user.username} at {user.email}</li>)}
       </ol>
     </main>
   );

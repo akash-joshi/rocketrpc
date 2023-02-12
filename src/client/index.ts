@@ -1,4 +1,5 @@
 import { io } from "socket.io-client";
+import { FunctionCallParams } from "../server";
 
 // Define a generic type `PromisifiedRecord<T>`
 type PromisifyRecord<T> = {
@@ -40,35 +41,6 @@ export default function Client<
     queue[id] = resolve;
   };
 
-  const proxyHandler = {
-    get(target: PromisifyRecord<API>, propertyName: string | symbol) {
-      console.log(proxyHandler, propertyName);
-      if (typeof target[propertyName] === "object") {
-        return target[propertyName];
-      }
-      return function (...params: unknown[]) {
-        const id = `${new Date().valueOf()}-${propertyName.toString()}-${JSON.stringify(
-          params
-        )}`;
-
-        const functionCallParameters = {
-          procedureName: propertyName,
-          params,
-          id,
-        };
-
-        console.log(functionCallParameters);
-
-        socket.emit("function-call", functionCallParameters);
-
-        return new Promise((resolve) => waitForResult(id, resolve));
-      };
-    },
-    apply: function (target, thisArg, argumentsList) {
-      console.log(target, thisArg, argumentsList);
-    },
-  } as PromisifyRecord<API>;
-
   const deprecatedProxyHandler = {
     get(_: any, procedureName: any) {
       return function (...params: unknown[]) {
@@ -93,13 +65,25 @@ export default function Client<
         return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`);
       },
       apply: function (_, __, argumentsList) {
-        console.log(
-          `Called function at path: ${path} with parameters: ${argumentsList}`
+        console.info(
+          `RocketRPC Clint Info: Called function at path: ${path} with parameters: ${argumentsList}`
         );
+        const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
+          argumentsList
+        )}`;
+
+        const functionCallParams: FunctionCallParams = {
+          id,
+          procedurePath: path,
+          params: argumentsList,
+        };
+
+        socket.emit("function-call", functionCallParams);
+
+        return new Promise((resolve) => waitForResult(id, resolve));
       },
     });
   }
 
   return LogProxy("") as PromisifyRecord<API>;
-  // new Proxy({}, proxyHandler) as PromisifyRecord<API>;
 }

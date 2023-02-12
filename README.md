@@ -1,4 +1,4 @@
-# RocketRPC 🚀 - A typesafe RPC to help your app fly like a rocket
+# RocketRPC 🚀 - A typesafe framework to destroy the client-server wall.
 
 ![Frame 2](https://user-images.githubusercontent.com/22196279/119225442-6f446400-bb21-11eb-8e63-ae8e62d6dcc9.png)
 

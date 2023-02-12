@@ -1,10 +1,10 @@
+import { PrismaClient } from "@prisma/client";
 import Server from "@root/src/server";
 
 const api = {
-  myFunction: (arg: string) => {
-    console.log("Im running on the backend" + arg);
-
-    return `here is that string you passed ${arg}`;
+  prisma: new PrismaClient(),
+  ping: (arg: string) => {
+    return `Pong - ${arg}`;
   },
 };
 

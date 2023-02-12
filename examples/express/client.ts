@@ -8,7 +8,7 @@ const main = async () => {
     .then((response) => response.text())
     .then(console.log);
 
-  console.log(await client.myFunction("rocketssss"));
+  console.log(await client.ping("rocketssss"));
 };
 
 main();

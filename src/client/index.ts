@@ -4,7 +4,7 @@ import { FunctionCallParams } from "../server";
 // Define a generic type `PromisifiedRecord<T>`
 type PromisifyRecord<T> = {
   // For each key in the input type `T`, `K`, determine the type of the corresponding value
-  [K in keyof T]: T[K] extends (...args: any[]) => any
+  [K in keyof T]-?: T[K] extends (...args: any[]) => any
     ? // If the value is a function,
       ReturnType<T[K]> extends Promise<any>
       ? // If the return type of the function is already a Promise, leave it as-is
@@ -14,8 +14,7 @@ type PromisifyRecord<T> = {
     : // If the value is an object, recursively convert it to a PromisifiedRecord
     T[K] extends object
     ? PromisifyRecord<T[K]>
-    : // Otherwise, leave the value as-is
-      T[K];
+    : never;
 };
 
 export default function Client<

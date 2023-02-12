@@ -1,28 +1,48 @@
 import type { Server as http } from "https";
-import { Server as SocketServer } from "socket.io";
+import { ServerOptions, Server as SocketServer } from "socket.io";
 
 type port = number;
 
+export type FunctionCallParams = {
+  id: string;
+  procedurePath: string;
+  params: any[];
+};
+
 export default function Server(
   endpoint: http | port = 8080,
-  api: { [key: string]: (...params: any[]) => unknown }
+  api: any,
+  meta?: { serverOptions?: Partial<ServerOptions> }
 ) {
-  const io = new SocketServer(endpoint);
+  const io = new SocketServer(endpoint, meta?.serverOptions);
+  console.info(
+    `Server started on ${
+      typeof endpoint === "number" ? `port ${endpoint}` : "given object"
+    }.`
+  );
 
   io.on("connection", (socket) => {
-    console.log("Client connected successfully");
+    console.info("RocketRPC Server Info: Client connected successfully");
 
     socket.on("function-call", async (msg) => {
-      const {
-        id,
-        procedureName,
-        params,
-      }: { id: string; procedureName: string; params: any[] } = msg;
+      const { id, procedurePath, params }: FunctionCallParams = msg;
 
-      const procedure = api[procedureName];
+      console.info("RocketRPC Server Info: Called function with parameters: ", {
+        id,
+        procedurePath,
+        params,
+      });
+
+      const procedureSplit = procedurePath.split(".");
+      let procedure = api;
+
+      for (const procedureName of procedureSplit) {
+        procedure = procedure[procedureName];
+      }
 
       try {
         const result = await procedure(...params);
+        console.info(`result for method ${procedurePath}`, { result });
 
         socket.emit("function-response", {
           id,

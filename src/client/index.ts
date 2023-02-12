@@ -1,7 +1,20 @@
 import { io } from "socket.io-client";
+import { FunctionCallParams } from "../server";
 
-type Promisify<T extends Record<string | symbol | number, any>> = {
-  [K in keyof T]: (...params: Parameters<T[K]>) => Promise<ReturnType<T[K]>>;
+// Define a generic type `PromisifiedRecord<T>`
+type PromisifyRecord<T> = {
+  // For each key in the input type `T`, `K`, determine the type of the corresponding value
+  [K in keyof T]-?: T[K] extends (...args: any[]) => any
+    ? // If the value is a function,
+      ReturnType<T[K]> extends Promise<any>
+      ? // If the return type of the function is already a Promise, leave it as-is
+        T[K]
+      : // Otherwise, convert the function to return a Promise
+        (...args: Parameters<T[K]>) => Promise<ReturnType<T[K]>>
+    : // If the value is an object, recursively convert it to a PromisifiedRecord
+    T[K] extends object
+    ? PromisifyRecord<T[K]>
+    : never;
 };
 
 export default function Client<
@@ -27,24 +40,49 @@ export default function Client<
     queue[id] = resolve;
   };
 
-  return new Proxy(
-    {},
-    {
-      get(_, procedureName) {
-        return function (...params: unknown[]) {
-          const id = `${new Date().valueOf()}-${procedureName.toString()}-${JSON.stringify(
-            params
-          )}`;
+  const deprecatedProxyHandler = {
+    get(_: any, procedureName: any) {
+      return function (...params: unknown[]) {
+        const id = `${new Date().valueOf()}-${procedureName.toString()}-${JSON.stringify(
+          params
+        )}`;
 
-          socket.emit("function-call", {
-            procedureName,
-            params,
-            id,
-          });
+        socket.emit("function-call", {
+          procedureName,
+          params,
+          id,
+        });
 
-          return new Promise((resolve) => waitForResult(id, resolve));
-        };
+        return new Promise((resolve) => waitForResult(id, resolve));
+      };
+    },
+  };
+
+  function LogProxy(path: string): unknown {
+    return new Proxy(() => {}, {
+      get: function (_, prop) {
+        return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`);
       },
-    }
-  ) as Promisify<API>;
+      apply: function (_, __, argumentsList) {
+        console.info(
+          `RocketRPC Clint Info: Called function at path: ${path} with parameters: ${argumentsList}`
+        );
+        const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
+          argumentsList
+        )}`;
+
+        const functionCallParams: FunctionCallParams = {
+          id,
+          procedurePath: path,
+          params: argumentsList,
+        };
+
+        socket.emit("function-call", functionCallParams);
+
+        return new Promise((resolve) => waitForResult(id, resolve));
+      },
+    });
+  }
+
+  return LogProxy("") as PromisifyRecord<API>;
 }

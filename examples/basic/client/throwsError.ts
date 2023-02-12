@@ -1,4 +1,4 @@
-import { Client } from "../../src";
+import { Client } from "../../../src";
 import { API } from "../api";
 
 const client = Client<API>();

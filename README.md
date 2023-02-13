@@ -6,7 +6,11 @@ RocketRPC is typesafe RPC library which gets out of your way. Define methods in 
 
 ## Usage
 
-![ezgif-7-0b72cd0d5d98](https://user-images.githubusercontent.com/22196279/119246713-701cda80-bba1-11eb-801f-283dbc85897a.gif)
+
+
+https://user-images.githubusercontent.com/22196279/218526614-2b971301-0a72-4092-88d0-e47a8f29e3b6.mp4
+
+
 
 ### Installation
 

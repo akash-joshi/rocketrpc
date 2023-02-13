@@ -55,7 +55,7 @@ export default function Client<
         },
         apply: function (_, __, argumentsList) {
           console.info(
-            `RocketRPC Clint Info: Called function at path: ${path} with parameters: ${argumentsList}`
+            `RocketRPC Client Info: Called function at path: ${path} with parameters: ${argumentsList}`
           );
           const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
             argumentsList

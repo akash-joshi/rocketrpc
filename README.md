@@ -126,4 +126,3 @@ Pull requests are welcome. You'll probably find lots of improvements to be made.
 
 Open issues for feedback, requesting features, reporting bugs or discussing ideas.
 
-Special thanks to [@mkrhere](https://github.com/mkrhere) for hand-holding me through most of the code.

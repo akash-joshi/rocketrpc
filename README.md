@@ -13,7 +13,7 @@ RocketRPC is typesafe RPC library which gets out of your way. Define methods in 
 Install the package
 
 ```sh
-npm i fsf
+npm i rocketrpc
 ```
 
 ### Common
@@ -33,7 +33,7 @@ export type API = {
 > Note: On the client side, all functions return a Promise with the result by default, because of the asynchronous nature of sockets. So, all passed functions are also modified to return a Promise.
 
 ```ts
-import { Client } from "fsf";
+import { Client } from "rocketrpc";
 import { API } from "../api";
 
 const client = Client<API>("http://localhost:8080");
@@ -55,7 +55,7 @@ main();
 ### Server
 
 ```ts
-import { Server } from "fsf";
+import { Server } from "rocketrpc";
 import { API } from "../api";
 import listFiles from "./apis/listFiles";
 import searchMovie from "./apis/searchMovie";

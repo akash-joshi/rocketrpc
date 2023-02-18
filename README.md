@@ -1,6 +1,6 @@
 # RocketRPC 🚀 - A typesafe framework to destroy the client-server wall.
 
-![Frame 2](https://user-images.githubusercontent.com/22196279/119225442-6f446400-bb21-11eb-8e63-ae8e62d6dcc9.png)
+![Frame 8175](https://user-images.githubusercontent.com/22196279/219864579-51a10cc1-a4b9-409f-80db-4c0e2527c53e.png)
 
 RocketRPC is typesafe RPC library which gets out of your way. Define methods in your server, which you can access instantly in your client - complete with auto-completions and type-checking.
 
@@ -38,19 +38,21 @@ export type API = {
 
 ```ts
 import { Client } from "rocketrpc";
-import { API } from "../api";
+import { API } from "../server";
 
 const client = Client<API>("http://localhost:8080");
 
-const { listFiles, searchMovie } = client;
+const { listFiles, prisma } = client;
 
 const main = async () => {
-  console.log(await client.hello());
+  // use prisma on the client
+  console.log(await prisma.user.findMany());
+  
   // passing multiple parameters to the function
   console.log(await client.sum(12, 20));
+
+  // get server details
   console.log(await listFiles());
-  // passing a string parameter
-  console.log(await searchMovie("kong"));
 };
 
 main();
@@ -60,19 +62,21 @@ main();
 
 ```ts
 import { Server } from "rocketrpc";
-import { API } from "../api";
-import listFiles from "./apis/listFiles";
-import searchMovie from "./apis/searchMovie";
+import { PrismaClient } from "@prisma/client";
 
-const api: API = {
-  hello: () => "Hello World!",
-  sum: (x, y) => x + y,
-  // Make an API call to movies API
-  searchMovie: searchMovie,
+import listFiles from "./apis/listFiles";
+
+const api = {
+  // initialize Prisma once
+  prisma: new PrismaClient();
+  
+  sum: (x: number, y: number) => x + y,
+
   // Fetch all files on server
-  listFiles: listFiles,
-  errorFunction: (a: any) => a.b,
+  listFiles,
 };
+
+export type API = typeof api;
 
 Server(8080, api);
 ```

@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { FunctionCallParams } from "../server";
 
 // Define a generic type `PromisifiedRecord<T>`
@@ -15,7 +15,7 @@ type PromisifyRecord<T> = {
     T[K] extends object
     ? PromisifyRecord<T[K]>
     : never;
-};
+} & { _rocketRpcContext: { socket: Socket } };
 
 export default function Client<
   API extends Record<string | symbol | number, unknown>
@@ -40,49 +40,42 @@ export default function Client<
     queue[id] = resolve;
   };
 
-  const deprecatedProxyHandler = {
-    get(_: any, procedureName: any) {
-      return function (...params: unknown[]) {
-        const id = `${new Date().valueOf()}-${procedureName.toString()}-${JSON.stringify(
-          params
-        )}`;
+  function LogProxy(path: string, options: { socket?: Socket } = {}): unknown {
+    return new Proxy(
+      {},
+      {
+        get: function (_, prop) {
+          if (path === "_rocketRpcContext" && prop === "socket") {
+            return socket;
+          }
 
-        socket.emit("function-call", {
-          procedureName,
-          params,
-          id,
-        });
+          return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
+            socket,
+          });
+        },
+        apply: function (_, __, argumentsList) {
+          console.info(
+            `RocketRPC Client Info: Called function at path: ${path} with parameters: ${argumentsList}`
+          );
+          const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
+            argumentsList
+          )}`;
 
-        return new Promise((resolve) => waitForResult(id, resolve));
-      };
-    },
-  };
+          const functionCallParams: FunctionCallParams = {
+            id,
+            procedurePath: path,
+            params: argumentsList,
+          };
 
-  function LogProxy(path: string): unknown {
-    return new Proxy(() => {}, {
-      get: function (_, prop) {
-        return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`);
-      },
-      apply: function (_, __, argumentsList) {
-        console.info(
-          `RocketRPC Clint Info: Called function at path: ${path} with parameters: ${argumentsList}`
-        );
-        const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
-          argumentsList
-        )}`;
+          socket.emit("function-call", functionCallParams);
 
-        const functionCallParams: FunctionCallParams = {
-          id,
-          procedurePath: path,
-          params: argumentsList,
-        };
-
-        socket.emit("function-call", functionCallParams);
-
-        return new Promise((resolve) => waitForResult(id, resolve));
-      },
-    });
+          return new Promise((resolve) => waitForResult(id, resolve));
+        },
+      }
+    );
   }
 
-  return LogProxy("") as PromisifyRecord<API>;
+  return LogProxy("", {
+    socket,
+  }) as PromisifyRecord<API>;
 }

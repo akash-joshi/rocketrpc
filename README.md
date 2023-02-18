@@ -83,6 +83,12 @@ At the moment, any error on the server-side is sent to `std:error` and thrown on
 
 Try running `/example/client/throwsError.ts` to check it out.
 
+## Metadata Context
+
+### Socket Client
+
+The socket.io client being used by rocketRPC is accessible via the `_rocketRpcContext` key.
+
 ## How does it work internally?
 
 In short, the library depends on Websockets, Object Proxies, and Typescript generics to work. In detail:

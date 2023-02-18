@@ -20,18 +20,6 @@ Install the package
 npm i rocketrpc
 ```
 
-### Common
-
-Define an interface for your api which is accessable in your client and server source code (e.g. by using yarn workspaces).
-
-```ts
-export type API = {
-  hello: () => string;
-  world: () => string;
-  sum: (x: number, y: number) => number;
-};
-```
-
 ### Client
 
 > Note: On the client side, all functions return a Promise with the result by default, because of the asynchronous nature of sockets. So, all passed functions are also modified to return a Promise.

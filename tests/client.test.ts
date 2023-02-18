@@ -1,6 +1,6 @@
 import Client from "../src/client/index";
 
-describe("client", () => {
+describe("client context returns socket object", () => {
   let client: ReturnType<typeof Client>;
 
   beforeAll(() => {
@@ -8,12 +8,13 @@ describe("client", () => {
   });
 
   afterAll(() => {
-    client.socket.close();
+    client._rocketRpcContext.socket.close();
   });
 
   test("should return the instance of socket", () => {
-    const socket = client.socket;
+    const socket = client._rocketRpcContext.socket;
 
+    expect(client.socket).toEqual({});
     expect(socket.constructor.name).toEqual("Socket");
   });
 });

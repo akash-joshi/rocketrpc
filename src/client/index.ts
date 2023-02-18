@@ -15,7 +15,7 @@ type PromisifyRecord<T> = {
     T[K] extends object
     ? PromisifyRecord<T[K]>
     : never;
-} & { socket: Socket };
+} & { _rocketRpcContext: { socket: Socket } };
 
 export default function Client<
   API extends Record<string | symbol | number, unknown>
@@ -45,7 +45,7 @@ export default function Client<
       {},
       {
         get: function (_, prop) {
-          if (prop === "socket") {
+          if (path === "_rocketRpcContext" && prop === "socket") {
             return socket;
           }
 
@@ -75,5 +75,7 @@ export default function Client<
     );
   }
 
-  return LogProxy("", { socket }) as PromisifyRecord<API>;
+  return LogProxy("", {
+    socket,
+  }) as PromisifyRecord<API>;
 }

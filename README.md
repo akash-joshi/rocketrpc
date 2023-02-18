@@ -1,6 +1,6 @@
 # RocketRPC 🚀 - A typesafe framework to destroy the client-server wall.
 
-![Frame 8175](https://user-images.githubusercontent.com/22196279/219864579-51a10cc1-a4b9-409f-80db-4c0e2527c53e.png)
+![Frame 8175 (1)](https://user-images.githubusercontent.com/22196279/219864833-74471e79-8afe-446a-95f6-7d37ef007e97.png)
 
 RocketRPC is typesafe RPC library which gets out of your way. Define methods in your server, which you can access instantly in your client - complete with auto-completions and type-checking.
 

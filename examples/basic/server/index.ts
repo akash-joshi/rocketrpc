@@ -13,4 +13,7 @@ const api: API = {
   errorFunction: (a: { b: unknown }) => a.b,
 };
 
-Server(8080, api);
+Server({
+  server: 8080,
+  api,
+});

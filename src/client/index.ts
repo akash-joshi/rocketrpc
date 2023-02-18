@@ -17,10 +17,21 @@ type PromisifyRecord<T> = {
     : never;
 } & { _rocketRpcContext: { socket: Socket } };
 
+export interface ClientInput {
+  // Socket.io endpoint default 8080
+  endpoint?: string;
+  // Use your own socket.io socket
+  socket?: Socket;
+}
+
 export default function Client<
   API extends Record<string | symbol | number, unknown>
->(endpoint: string = "http://localhost:8080") {
-  const socket = io(endpoint);
+>(input: ClientInput = {}): PromisifyRecord<API> {
+  let socket: Socket | undefined = input.socket;
+  if (!socket) {
+    const endpoint = input.endpoint || "http://localhost:8080";
+    socket = io(endpoint);
+  }
 
   const queue: { [key: string]: (value: unknown) => void } = {};
 
@@ -67,7 +78,7 @@ export default function Client<
             params: argumentsList,
           };
 
-          socket.emit("function-call", functionCallParams);
+          socket?.emit("function-call", functionCallParams);
 
           return new Promise((resolve) => waitForResult(id, resolve));
         },

@@ -10,10 +10,14 @@ const api = {
 
 export type API = typeof api;
 
-Server(8080, api, {
-  serverOptions: {
-    cors: {
-      origin: "*",
+Server({
+  server: 8080,
+  api,
+  meta: {
+    serverOptions: {
+      cors: {
+        origin: "*",
+      },
     },
   },
 });

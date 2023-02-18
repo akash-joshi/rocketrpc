@@ -23,4 +23,7 @@ const api = {
 
 export type API = typeof api;
 
-Server(server, api);
+Server({
+  srv: server,
+  api,
+});

@@ -1,25 +1,35 @@
 import type { Server as http } from "https";
 import { ServerOptions, Server as SocketServer } from "socket.io";
 
-type port = number;
-
 export type FunctionCallParams = {
   id: string;
   procedurePath: string;
   params: any[];
 };
 
-export default function Server(
-  endpoint: http | port = 8080,
-  api: any,
-  meta?: { serverOptions?: Partial<ServerOptions> }
-) {
-  const io = new SocketServer(endpoint, meta?.serverOptions);
-  console.info(
-    `Server started on ${
-      typeof endpoint === "number" ? `port ${endpoint}` : "given object"
-    }.`
-  );
+export interface ServerInput {
+  // Socket.io server or port
+  server: http | number;
+  // The API to expose
+  api: any;
+  // Socket.io server options
+  meta?: { serverOptions?: Partial<ServerOptions> };
+}
+
+export type Context = {
+  _rocketRpcContext: { socket: SocketServer };
+};
+
+export default function Server(input: ServerInput): Context {
+  if (!input.server) {
+    throw new Error("RocketRPC Server Error: No server provided");
+  }
+
+  if (!input.api) {
+    throw new Error("RocketRPC Server Error: No API provided");
+  }
+
+  const io = new SocketServer(input.server, input?.meta?.serverOptions);
 
   io.on("connection", (socket) => {
     console.info("RocketRPC Server Info: Client connected successfully");
@@ -34,7 +44,7 @@ export default function Server(
       });
 
       const procedureSplit = procedurePath.split(".");
-      let procedure = api;
+      let procedure = input.api;
 
       for (const procedureName of procedureSplit) {
         procedure = procedure[procedureName];
@@ -59,4 +69,8 @@ export default function Server(
       }
     });
   });
+
+  return {
+    _rocketRpcContext: { socket: io },
+  };
 }

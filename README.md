@@ -73,7 +73,7 @@ Server(8080, api);
 
 At the moment, any error on the server-side is sent to `std:error` and thrown on the client side.
 
-Try running `/example/client/throwsError.ts` to check it out.
+Try running the examples locally!
 
 ## Metadata Context
 

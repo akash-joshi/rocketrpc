@@ -24,6 +24,6 @@ const api = {
 export type API = typeof api;
 
 Server({
-  srv: server,
+  server,
   api,
 });

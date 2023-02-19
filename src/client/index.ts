@@ -1,8 +1,8 @@
 import { io, Socket } from "socket.io-client";
 import { FunctionCallParams } from "../server";
 
-// Define a generic type `PromisifiedRecord<T>`
-type PromisifyRecord<T> = {
+// Define a generic type `PromisifyRecord<T>`
+export type PromisifyRecord<T> = {
   // For each key in the input type `T`, `K`, determine the type of the corresponding value
   [K in keyof T]-?: T[K] extends (...args: any[]) => any
     ? // If the value is a function,
@@ -16,11 +16,7 @@ type PromisifyRecord<T> = {
     ? PromisifyRecord<T[K]>
     : never;
 } & {
-  _rocketRpcContext: {
-    /** @deprecated this field might be removed in future versions -
-     * https://github.com/akash-joshi/rocketrpc/discussions/17 */
-    socket: Socket;
-  };
+  _rocketRpcContext: RocketRPCContext;
 };
 
 export default function Client<
@@ -46,14 +42,19 @@ export default function Client<
     queue[id] = resolve;
   };
 
-  function LogProxy(path: string, options: { socket?: Socket } = {}): unknown {
+  const closeConnection = () => {
+    socket.close();
+  };
+
+  function LogProxy(path: string, options: RocketRPCContext): unknown {
     return new Proxy(() => {}, {
       get: function (_, prop) {
-        if (path === "_rocketRpcContext" && prop === "socket") {
-          return socket;
+        if (path === "_rocketRpcContext" && prop in options) {
+          return options[prop as keyof RocketRPCContext];
         }
 
         return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
+          closeConnection,
           socket,
         });
       },
@@ -78,5 +79,12 @@ export default function Client<
     });
   }
 
-  return LogProxy("", { socket }) as PromisifyRecord<API>;
+  return LogProxy("", { closeConnection, socket }) as PromisifyRecord<API>;
 }
+
+type RocketRPCContext = {
+  closeConnection: () => void;
+  /** @deprecated this field might be removed in future versions -
+   * https://github.com/akash-joshi/rocketrpc/discussions/17 */
+  socket: Socket;
+};

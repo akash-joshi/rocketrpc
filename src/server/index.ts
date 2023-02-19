@@ -15,9 +15,10 @@ export default function Server(
   meta?: { serverOptions?: Partial<ServerOptions> }
 ) {
   const io = new SocketServer(endpoint, meta?.serverOptions);
+  
   console.info(
     `Server started on ${
-      typeof endpoint === "number" ? `port ${endpoint}` : "given object"
+      typeof endpoint === "number" ? `port ${endpoint}` : "given server"
     }.`
   );
 

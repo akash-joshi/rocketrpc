@@ -1,8 +1,8 @@
 import { io, Socket } from "socket.io-client";
 import { FunctionCallParams } from "../server";
 
-// Define a generic type `PromisifiedRecord<T>`
-type PromisifyRecord<T> = {
+// Define a generic type `PromisifyRecord<T>`
+export type PromisifyRecord<T> = {
   // For each key in the input type `T`, `K`, determine the type of the corresponding value
   [K in keyof T]-?: T[K] extends (...args: any[]) => any
     ? // If the value is a function,
@@ -15,12 +15,6 @@ type PromisifyRecord<T> = {
     T[K] extends object
     ? PromisifyRecord<T[K]>
     : never;
-} & {
-  _rocketRpcContext: {
-    /** @deprecated this field might be removed in future versions -
-     * https://github.com/akash-joshi/rocketrpc/discussions/17 */
-    socket: Socket;
-  };
 };
 
 export default function Client<
@@ -78,5 +72,11 @@ export default function Client<
     });
   }
 
-  return LogProxy("", { socket }) as PromisifyRecord<API>;
+  return LogProxy("", { socket }) as PromisifyRecord<API> & {
+    _rocketRpcContext: {
+      /** @deprecated this field might be removed in future versions -
+       * https://github.com/akash-joshi/rocketrpc/discussions/17 */
+      socket: Socket;
+    };
+  };
 }

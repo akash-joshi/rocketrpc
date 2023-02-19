@@ -15,7 +15,13 @@ type PromisifyRecord<T> = {
     T[K] extends object
     ? PromisifyRecord<T[K]>
     : never;
-} & { _rocketRpcContext: { socket: Socket } };
+} & {
+  _rocketRpcContext: {
+    /** @deprecated this field might be removed in future versions - 
+     * https://github.com/akash-joshi/rocketrpc/discussions/17 */
+    socket: Socket;
+  };
+};
 
 export default function Client<
   API extends Record<string | symbol | number, unknown>

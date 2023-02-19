@@ -15,6 +15,8 @@ export type PromisifyRecord<T> = {
     T[K] extends object
     ? PromisifyRecord<T[K]>
     : never;
+} & {
+  _rocketRpcContext: RocketRPCContext;
 };
 
 export default function Client<
@@ -40,15 +42,19 @@ export default function Client<
     queue[id] = resolve;
   };
 
-  function LogProxy(path: string, options: { socket?: Socket } = {}): unknown {
+  const closeConnection = () => {
+    socket.close();
+  };
+
+  function LogProxy(path: string, options: RocketRPCContext): unknown {
     return new Proxy(() => {}, {
       get: function (_, prop) {
-        if (path === "_rocketRpcContext" && prop === "socket") {
-          return socket;
+        if (path === "_rocketRpcContext" && prop === "closeConnection") {
+          return closeConnection;
         }
 
         return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
-          socket,
+          closeConnection,
         });
       },
       apply: function (_, __, argumentsList) {
@@ -72,11 +78,9 @@ export default function Client<
     });
   }
 
-  return LogProxy("", { socket }) as PromisifyRecord<API> & {
-    _rocketRpcContext: {
-      /** @deprecated this field might be removed in future versions -
-       * https://github.com/akash-joshi/rocketrpc/discussions/17 */
-      socket: Socket;
-    };
-  };
+  return LogProxy("", { closeConnection }) as PromisifyRecord<API>;
 }
+
+type RocketRPCContext = {
+  closeConnection: () => void;
+};

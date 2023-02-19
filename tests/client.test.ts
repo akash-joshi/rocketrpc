@@ -2,26 +2,7 @@ import { createServer } from "http";
 import { Client, Server } from "../src";
 import { PromisifyRecord } from "../src/client";
 
-describe("client context returns socket object", () => {
-  let client: ReturnType<typeof Client>;
-
-  beforeAll(() => {
-    client = Client();
-  });
-
-  afterAll(() => {
-    client._rocketRpcContext.socket.close();
-  });
-
-  test("should return the instance of socket", () => {
-    const socket = client._rocketRpcContext.socket;
-
-    expect(typeof client.socket).toEqual("function");
-    expect(socket.constructor.name).toEqual("Socket");
-  });
-});
-
-describe("basic example working well", () => {
+describe("basic example works with closing connections", () => {
   const api = {
     hello: () => "Hello World!",
     sum: (x: number, y: number) => x + y,
@@ -33,15 +14,22 @@ describe("basic example working well", () => {
     sum: (x: number, y: number) => number;
   }>;
 
+  let server: ReturnType<typeof Server>;
+
   beforeAll((done) => {
     const httpServer = createServer();
-    Server(httpServer, api);
+    server = Server(httpServer, api);
     httpServer.listen(() => {
       const address = httpServer.address();
       const port = typeof address === "string" ? address : address?.port;
       client = Client<typeof api>(`http://localhost:${port}`);
       done();
     });
+  });
+
+  afterAll(() => {
+    client._rocketRpcContext.closeConnection();
+    server.closeConnection();
   });
 
   test("basic functionality should work", async () => {

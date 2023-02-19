@@ -61,4 +61,10 @@ export default function Server(
       }
     });
   });
+
+  return {
+    closeConnection: () => {
+      io.close();
+    },
+  };
 }

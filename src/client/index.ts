@@ -17,7 +17,7 @@ type PromisifyRecord<T> = {
     : never;
 } & {
   _rocketRpcContext: {
-    /** @deprecated this field might be removed in future versions - 
+    /** @deprecated this field might be removed in future versions -
      * https://github.com/akash-joshi/rocketrpc/discussions/17 */
     socket: Socket;
   };
@@ -47,41 +47,36 @@ export default function Client<
   };
 
   function LogProxy(path: string, options: { socket?: Socket } = {}): unknown {
-    return new Proxy(
-      {},
-      {
-        get: function (_, prop) {
-          if (path === "_rocketRpcContext" && prop === "socket") {
-            return socket;
-          }
+    return new Proxy(() => {}, {
+      get: function (_, prop) {
+        if (path === "_rocketRpcContext" && prop === "socket") {
+          return socket;
+        }
 
-          return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
-            socket,
-          });
-        },
-        apply: function (_, __, argumentsList) {
-          console.info(
-            `RocketRPC Client Info: Called function at path: ${path} with parameters: ${argumentsList}`
-          );
-          const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
-            argumentsList
-          )}`;
+        return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
+          socket,
+        });
+      },
+      apply: function (_, __, argumentsList) {
+        console.info(
+          `RocketRPC Client Info: Called function at path: ${path} with parameters: ${argumentsList}`
+        );
+        const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
+          argumentsList
+        )}`;
 
-          const functionCallParams: FunctionCallParams = {
-            id,
-            procedurePath: path,
-            params: argumentsList,
-          };
+        const functionCallParams: FunctionCallParams = {
+          id,
+          procedurePath: path,
+          params: argumentsList,
+        };
 
-          socket.emit("function-call", functionCallParams);
+        socket.emit("function-call", functionCallParams);
 
-          return new Promise((resolve) => waitForResult(id, resolve));
-        },
-      }
-    );
+        return new Promise((resolve) => waitForResult(id, resolve));
+      },
+    });
   }
 
-  return LogProxy("", {
-    socket,
-  }) as PromisifyRecord<API>;
+  return LogProxy("", { socket }) as PromisifyRecord<API>;
 }

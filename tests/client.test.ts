@@ -14,7 +14,7 @@ describe("client context returns socket object", () => {
   test("should return the instance of socket", () => {
     const socket = client._rocketRpcContext.socket;
 
-    expect(client.socket).toEqual({});
+    expect(typeof client.socket).toEqual("function");
     expect(socket.constructor.name).toEqual("Socket");
   });
 });

@@ -1,9 +1,9 @@
 {
   "name": "rocketrpc",
-  "version": "0.0.0-alpha.2",
+  "version": "0.0.0-alpha.3",
   "description": "",
-  "main": "./dist/src/index.js",
-  "types": "./dist/src/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "prepublish": "npm run build",
@@ -48,5 +48,8 @@
   },
   "_moduleAliases": {
     "@root": "dist/"
-  }
+  },
+  "files": [
+    "./dist"
+  ]
 }

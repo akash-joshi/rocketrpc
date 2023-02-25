@@ -46,14 +46,14 @@ export default function Client<
     socket.close();
   };
 
-  function LogProxy(path: string, options: RocketRPCContext): unknown {
+  function ClientProxy(path: string, options: RocketRPCContext): unknown {
     return new Proxy(() => {}, {
       get: function (_, prop) {
         if (path === "_rocketRpcContext" && prop in options) {
           return options[prop as keyof RocketRPCContext];
         }
 
-        return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
+        return ClientProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
           closeConnection,
           socket,
         });
@@ -79,7 +79,7 @@ export default function Client<
     });
   }
 
-  return LogProxy("", { closeConnection, socket }) as PromisifyRecord<API>;
+  return ClientProxy("", { closeConnection, socket }) as PromisifyRecord<API>;
 }
 
 type RocketRPCContext = {

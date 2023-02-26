@@ -11,8 +11,7 @@
   }
 
   function removeFromList(index: number) {
-    todoList.splice(index, 1);
-    todoList = todoList;
+    todoList = todoList.filter((_, currentIndex) => currentIndex !== index);
   }
 </script>
 

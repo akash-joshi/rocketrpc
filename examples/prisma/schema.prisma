@@ -25,5 +25,5 @@ model Todo {
   owner     User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
+  userId    String?
 }

@@ -1,10 +1,5 @@
 import { ServerOptions, Server as SocketServer } from "socket.io";
-
-export type FunctionCallParams = {
-  id: string;
-  procedurePath: string;
-  params: any[];
-};
+import { FunctionCallParams } from "../types";
 
 export default function Server(
   endpoint: ConstructorParameters<typeof SocketServer>[0],

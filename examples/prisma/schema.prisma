@@ -20,7 +20,7 @@ model User {
 
 model Todo {
   id        String   @id @default(cuid())
-  status    Boolean
+  status    Boolean?  @default(false)
   text      String
   owner     User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())

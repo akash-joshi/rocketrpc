@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { FunctionCallParams } from "../server";
+import { FunctionCallParams } from "../types";
 
 // Define a generic type `PromisifyRecord<T>`
 export type PromisifyRecord<T> = {
@@ -21,8 +21,8 @@ export type PromisifyRecord<T> = {
 
 export default function Client<
   API extends Record<string | symbol | number, unknown>
->(endpoint: string = "http://localhost:8080") {
-  const socket = io(endpoint);
+  >(endpoint: string = "http://localhost:8080") {
+    const socket = io(endpoint);
 
   const queue: { [key: string]: (value: unknown) => void } = {};
 

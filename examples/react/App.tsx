@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Client } from "../../../src";
+import React, { useEffect, useState } from "react";
+import { Client } from "../../src";
 import { User } from "@prisma/client";
-import { API } from "../../prisma/server";
+import { API } from "../prisma/server";
 
 const client = Client<API>("http://localhost:8080");
 

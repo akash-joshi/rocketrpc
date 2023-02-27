@@ -19,8 +19,6 @@ export default function Server(
   );
 
   io.on("connection", (socket) => {
-    console.info("RocketRPC Server Info: Client connected successfully");
-
     socket.on("function-call", async (msg) => {
       const { id, procedurePath, params }: FunctionCallParams = msg;
 

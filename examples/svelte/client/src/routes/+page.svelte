@@ -1,5 +1,15 @@
 <script lang="ts">
+  import Client from "../../../../../src/client";
+  import type { API } from "../../../../prisma/server";
+
+  const { ping } = Client<API>("http://localhost:8080");
+
   let newItem = "";
+  let pingResponse = "Loading...";
+
+  ping("World").then((response) => {
+    pingResponse = response;
+  });
 
   type Todo = { text: string; status: boolean };
   let todoList: Todo[] = [];
@@ -14,6 +24,8 @@
     todoList = todoList.filter((_, currentIndex) => currentIndex !== index);
   }
 </script>
+
+<h2>Ping - {pingResponse}</h2>
 
 <form on:submit={addToList}>
   <input

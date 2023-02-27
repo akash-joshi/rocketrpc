@@ -26,6 +26,10 @@ export default function Client<
 
   const queue: { [key: string]: (value: unknown) => void } = {};
 
+  socket.on("connect", () => {
+    console.info("RocketRPC Server Info: Client connected successfully")
+  });
+
   socket.on("function-response", (msg) => {
     const { result, id, status, error } = msg;
 

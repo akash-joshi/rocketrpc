@@ -1,8 +1,12 @@
+import { Server } from "../../../src/index";
 import { PrismaClient } from "@prisma/client";
-import Server from "@root/src/server";
 
-const api = {
-  prisma: new PrismaClient(),
+const prisma = new PrismaClient();
+
+export const api = {
+  prisma,
+  hello: () => "Hello World",
+  sum: (num1: number, num2: number) => num1 + num2,
   ping: (arg: string) => {
     return `Pong - ${arg}`;
   },

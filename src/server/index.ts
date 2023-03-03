@@ -1,10 +1,5 @@
 import { ServerOptions, Server as SocketServer } from "socket.io";
-
-export type FunctionCallParams = {
-  id: string;
-  procedurePath: string;
-  params: any[];
-};
+import { FunctionCallParams } from "../types";
 
 export default function Server(
   endpoint: ConstructorParameters<typeof SocketServer>[0],
@@ -24,8 +19,6 @@ export default function Server(
   );
 
   io.on("connection", (socket) => {
-    console.info("RocketRPC Server Info: Client connected successfully");
-
     socket.on("function-call", async (msg) => {
       const { id, procedurePath, params }: FunctionCallParams = msg;
 

@@ -2,8 +2,8 @@
   import type { Todo } from "@prisma/client";
   import { onMount } from "svelte";
 
-  import type { API } from "../../../../../prisma/server";
-  import Client from "./../../../../../../src/client";
+  import type { API } from "../../../../prisma/server";
+  import Client from "./../../../../../src/client";
 
   const client = Client<API>("http://localhost:8080");
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Client from "../../../../../src/client";
-  import type { API } from "../../../../prisma/server";
+  import Client from "../../../../src/client";
+  import type { API } from "../../../prisma/server";
 
   const { ping } = Client<API>("http://localhost:8080");
 

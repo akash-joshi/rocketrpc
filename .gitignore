@@ -106,3 +106,4 @@ dist
 .parcel-cache/
 dev.db
 dev.db-journal
+examples/prisma/migrations/

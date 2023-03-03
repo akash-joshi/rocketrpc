@@ -1,7 +1,4 @@
-import type { Server as http } from "https";
 import { ServerOptions, Server as SocketServer } from "socket.io";
-
-type port = number;
 
 export type FunctionCallParams = {
   id: string;
@@ -10,14 +7,19 @@ export type FunctionCallParams = {
 };
 
 export default function Server(
-  endpoint: http | port = 8080,
+  endpoint: ConstructorParameters<typeof SocketServer>[0],
   api: any,
   meta?: { serverOptions?: Partial<ServerOptions> }
 ) {
+  if (!endpoint) {
+    endpoint = 8080;
+  }
+
   const io = new SocketServer(endpoint, meta?.serverOptions);
+
   console.info(
     `Server started on ${
-      typeof endpoint === "number" ? `port ${endpoint}` : "given object"
+      typeof endpoint === "number" ? `port ${endpoint}` : "given server"
     }.`
   );
 
@@ -59,4 +61,10 @@ export default function Server(
       }
     });
   });
+
+  return {
+    closeConnection: () => {
+      io.close();
+    },
+  };
 }

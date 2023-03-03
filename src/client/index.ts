@@ -1,8 +1,8 @@
 import { io, Socket } from "socket.io-client";
 import { FunctionCallParams } from "../server";
 
-// Define a generic type `PromisifiedRecord<T>`
-type PromisifyRecord<T> = {
+// Define a generic type `PromisifyRecord<T>`
+export type PromisifyRecord<T> = {
   // For each key in the input type `T`, `K`, determine the type of the corresponding value
   [K in keyof T]-?: T[K] extends (...args: any[]) => any
     ? // If the value is a function,
@@ -15,7 +15,9 @@ type PromisifyRecord<T> = {
     T[K] extends object
     ? PromisifyRecord<T[K]>
     : never;
-} & { _rocketRpcContext: { socket: Socket } };
+} & {
+  _rocketRpcContext: RocketRPCContext;
+};
 
 export default function Client<
   API extends Record<string | symbol | number, unknown>
@@ -40,42 +42,49 @@ export default function Client<
     queue[id] = resolve;
   };
 
-  function LogProxy(path: string, options: { socket?: Socket } = {}): unknown {
-    return new Proxy(
-      {},
-      {
-        get: function (_, prop) {
-          if (path === "_rocketRpcContext" && prop === "socket") {
-            return socket;
-          }
+  const closeConnection = () => {
+    socket.close();
+  };
 
-          return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
-            socket,
-          });
-        },
-        apply: function (_, __, argumentsList) {
-          console.info(
-            `RocketRPC Client Info: Called function at path: ${path} with parameters: ${argumentsList}`
-          );
-          const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
-            argumentsList
-          )}`;
+  function LogProxy(path: string, options: RocketRPCContext): unknown {
+    return new Proxy(() => {}, {
+      get: function (_, prop) {
+        if (path === "_rocketRpcContext" && prop in options) {
+          return options[prop as keyof RocketRPCContext];
+        }
 
-          const functionCallParams: FunctionCallParams = {
-            id,
-            procedurePath: path,
-            params: argumentsList,
-          };
+        return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
+          closeConnection,
+          socket,
+        });
+      },
+      apply: function (_, __, argumentsList) {
+        console.info(
+          `RocketRPC Client Info: Called function at path: ${path} with parameters: ${argumentsList}`
+        );
+        const id = `${new Date().valueOf()}-${path}-${JSON.stringify(
+          argumentsList
+        )}`;
 
-          socket.emit("function-call", functionCallParams);
+        const functionCallParams: FunctionCallParams = {
+          id,
+          procedurePath: path,
+          params: argumentsList,
+        };
 
-          return new Promise((resolve) => waitForResult(id, resolve));
-        },
-      }
-    );
+        socket.emit("function-call", functionCallParams);
+
+        return new Promise((resolve) => waitForResult(id, resolve));
+      },
+    });
   }
 
-  return LogProxy("", {
-    socket,
-  }) as PromisifyRecord<API>;
+  return LogProxy("", { closeConnection, socket }) as PromisifyRecord<API>;
 }
+
+type RocketRPCContext = {
+  closeConnection: () => void;
+  /** @deprecated this field might be removed in future versions -
+   * https://github.com/akash-joshi/rocketrpc/discussions/17 */
+  socket: Socket;
+};

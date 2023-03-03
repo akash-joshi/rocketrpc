@@ -124,6 +124,18 @@ const client = Client<API>(endpoint);
 
 The client function is actually a generic, which accepts the type provided by the user and applies `Promise` to the return type of each of them. It's a very Typescript-specific piece of code but you can read it [here](https://github.com/akash-joshi/functions-without-borders/blob/01553873cd1a1f1acc66270c5521a74b58680be0/src/client/index.ts#L3).
 
+## Sponsors
+
+If you find RocketRPC enjoyable to work with and wish to show your support for the project, you can express your gratitude by sponsoring it through [GitHub Sponsors](https://github.com/sponsors/akash-joshi)!
+
+Furthermore, if your company is currently utilizing RocketRPC and would like to support its long-term maintenance, please refer to the [sponsorship tiers](https://github.com/sponsors/akash-joshi).
+
+<table>
+  <tr>
+   <td align="center"><a href="https://rocketconnect.co.uk/?ref=rocketrpc"><img src="https://avatars.githubusercontent.com/u/96782953?v=4&s=200" width="200" alt="RocketConnect"/><br />RocketConnect</a></td>
+  </tr>
+</table>
+
 ## Contributing
 
 Pull requests are welcome. You'll probably find lots of improvements to be made.

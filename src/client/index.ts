@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { FunctionCallParams } from "../server";
+import { FunctionCallParams } from "../types";
 
 // Define a generic type `PromisifyRecord<T>`
 export type PromisifyRecord<T> = {
@@ -21,10 +21,14 @@ export type PromisifyRecord<T> = {
 
 export default function Client<
   API extends Record<string | symbol | number, unknown>
->(endpoint: string = "http://localhost:8080") {
-  const socket = io(endpoint);
+  >(endpoint: string = "http://localhost:8080") {
+    const socket = io(endpoint);
 
   const queue: { [key: string]: (value: unknown) => void } = {};
+
+  socket.on("connect", () => {
+    console.info("RocketRPC Server Info: Client connected successfully")
+  });
 
   socket.on("function-response", (msg) => {
     const { result, id, status, error } = msg;
@@ -46,14 +50,14 @@ export default function Client<
     socket.close();
   };
 
-  function LogProxy(path: string, options: RocketRPCContext): unknown {
+  function ClientProxy(path: string, options: RocketRPCContext): unknown {
     return new Proxy(() => {}, {
       get: function (_, prop) {
         if (path === "_rocketRpcContext" && prop in options) {
           return options[prop as keyof RocketRPCContext];
         }
 
-        return LogProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
+        return ClientProxy(`${path ? `${path}.` : ""}${String(prop)}`, {
           closeConnection,
           socket,
         });
@@ -79,7 +83,7 @@ export default function Client<
     });
   }
 
-  return LogProxy("", { closeConnection, socket }) as PromisifyRecord<API>;
+  return ClientProxy("", { closeConnection, socket }) as PromisifyRecord<API>;
 }
 
 type RocketRPCContext = {

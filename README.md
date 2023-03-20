@@ -4,19 +4,19 @@
 
 RocketRPC is typesafe RPC library which gets out of your way. Define methods in your server, which you can access instantly in your client - complete with auto-completions and type-checking.
 
-## Talk
-
-Click on the image below to watch @akash-joshi talk about RocketRPC:
-
-<p align="center">
-  <a href="https://youtu.be/RkQ_f7XxdMI?t=2632">
-    <img alt="Talk" src="https://user-images.githubusercontent.com/22196279/226218558-f7a325a2-a051-4f06-9bc5-089051f1a48f.jpg" style="max-height: 350px">
-  </a>
-</p>
-
 ## Usage
 
 https://user-images.githubusercontent.com/22196279/218526614-2b971301-0a72-4092-88d0-e47a8f29e3b6.mp4
+
+## Talk
+
+Click on the image below to watch @akash-joshi talk about RocketRPC at Svelte London:
+
+<p align="center">
+  <a href="https://youtu.be/RkQ_f7XxdMI?t=2632">
+    <img alt="Talk" src="https://user-images.githubusercontent.com/22196279/226218558-f7a325a2-a051-4f06-9bc5-089051f1a48f.jpg" height="350">
+  </a>
+</p>
 
 ### Installation
 

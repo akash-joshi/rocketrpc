@@ -4,13 +4,15 @@
 
 RocketRPC is typesafe RPC library which gets out of your way. Define methods in your server, which you can access instantly in your client - complete with auto-completions and type-checking.
 
+## Talk
+
+Click on the image below to watch @akash-joshi talk about RocketRPC:
+
+[![Talk](https://user-images.githubusercontent.com/22196279/226218558-f7a325a2-a051-4f06-9bc5-089051f1a48f.jpg)](https://youtu.be/RkQ_f7XxdMI?t=2632)
+
 ## Usage
 
-
-
 https://user-images.githubusercontent.com/22196279/218526614-2b971301-0a72-4092-88d0-e47a8f29e3b6.mp4
-
-
 
 ### Installation
 
@@ -35,7 +37,7 @@ const { listFiles, prisma } = client;
 const main = async () => {
   // use prisma on the client
   console.log(await prisma.user.findMany());
-  
+
   // passing multiple parameters to the function
   console.log(await client.sum(12, 20));
 
@@ -57,7 +59,7 @@ import listFiles from "./apis/listFiles";
 const api = {
   // initialize Prisma once
   prisma: new PrismaClient();
-  
+
   sum: (x: number, y: number) => x + y,
 
   // Fetch all files on server
@@ -139,4 +141,3 @@ Furthermore, if your company is currently utilizing RocketRPC and would like to 
 Pull requests are welcome. You'll probably find lots of improvements to be made.
 
 Open issues for feedback, requesting features, reporting bugs or discussing ideas.
-

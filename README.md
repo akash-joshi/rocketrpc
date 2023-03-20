@@ -8,7 +8,11 @@ RocketRPC is typesafe RPC library which gets out of your way. Define methods in 
 
 Click on the image below to watch @akash-joshi talk about RocketRPC:
 
-[![Talk](https://user-images.githubusercontent.com/22196279/226218558-f7a325a2-a051-4f06-9bc5-089051f1a48f.jpg)](https://youtu.be/RkQ_f7XxdMI?t=2632)
+<p align="center">
+  <a href="https://youtu.be/RkQ_f7XxdMI?t=2632">
+    <img alt="Talk" src="https://user-images.githubusercontent.com/22196279/226218558-f7a325a2-a051-4f06-9bc5-089051f1a48f.jpg" style="max-height: 350px">
+  </a>
+</p>
 
 ## Usage
 

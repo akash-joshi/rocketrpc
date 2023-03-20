@@ -6,9 +6,9 @@ RocketRPC is typesafe RPC library which gets out of your way. Define methods in 
 
 ## Talk
 
-Watch @akash-joshi talk about RocketRPC:
+Click on the image below to watch @akash-joshi talk about RocketRPC:
 
-[![Talk](https://img.youtube.com/vi/RkQ_f7XxdMI/0.jpg)](https://youtu.be/RkQ_f7XxdMI?t=2632)
+[![Talk](https://user-images.githubusercontent.com/22196279/226218558-f7a325a2-a051-4f06-9bc5-089051f1a48f.jpg)](https://youtu.be/RkQ_f7XxdMI?t=2632)
 
 ## Usage
 

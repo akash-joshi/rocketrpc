@@ -1,4 +1,6 @@
-export type Note = { text: string; done: boolean; id: string };
+import React from "react";
+
+export type Todo = { text: string; status: boolean; id: string };
 
 export const Todos = ({
   notes,
@@ -6,7 +8,7 @@ export const Todos = ({
   onDone,
   onDelete,
 }: {
-  notes: Note[];
+  notes: Todo[];
   addNote: (newNote: string) => void;
   onDone: (index: string, done: boolean) => void;
   onDelete: (index: string) => void;

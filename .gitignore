@@ -108,3 +108,4 @@ dev.db
 dev.db-journal
 examples/prisma/migrations/
 bun.lockb
+www/.vitepress/cache/

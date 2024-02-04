@@ -35,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/akash-joshi/functions-over-websockets/issues"
   },
-  "homepage": "https://github.com/akash-joshi/functions-over-websockets#readme",
+  "homepage": "https://rocketrpc.com",
   "dependencies": {
     "socket.io": "^4.0.0",
     "socket.io-client": "^4.3.0"

@@ -1,4 +1,4 @@
-# RocketRPC 🚀 - A typesafe framework to destroy the client-server wall.
+# RocketRPC 🚀 - A fast and secure RPC to expose server data to a client.
 
 ![Frame 8175 (1)](https://user-images.githubusercontent.com/22196279/219864833-74471e79-8afe-446a-95f6-7d37ef007e97.png)
 
